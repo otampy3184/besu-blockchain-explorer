@@ -13,23 +13,27 @@ interface BlockHeader {
 }
 
 const LatestBlockHeader = () => {
-    const [blockHeader, setBlockHeader] = useState<BlockHeader | null>(null);
+  const [blockHeader, setBlockHeader] = useState<BlockHeader | null>(null);
 
-    useEffect(() => {
-        const socket = io(SOCKET_SERVER_URL); // URLを指定してSocket.IOを初期化
+  useEffect(() => {
+    // サーバーを初期化
+    fetch('/api/socket');
 
-        socket.on('connect', () => {
-            console.log('WebSocket接続が確立されました');
-        });
+    const socket = io();
 
-        socket.on('newBlockHeader', (data: BlockHeader) => {
-            setBlockHeader(data);
-        });
+    socket.on('connect', () => {
+      console.log('WebSocket接続が確立されました');
+    });
 
-        return () => {
-            socket.disconnect();
-        };
-    }, []);
+    socket.on('newBlockHeader', (data: BlockHeader) => {
+      setBlockHeader(data);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
     if (!blockHeader) {
         return <div>最新のブロックヘッダーを取得中...</div>;
     }
