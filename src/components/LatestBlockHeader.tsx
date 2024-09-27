@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
-const SOCKET_SERVER_URL = 'http://localhost:3000'; // WebSocketサーバーのURL
+const SOCKET_SERVER_URL = 'http://localhost:4000';
 
 interface BlockHeader {
     number: number;
@@ -16,10 +16,7 @@ const LatestBlockHeader = () => {
   const [blockHeader, setBlockHeader] = useState<BlockHeader | null>(null);
 
   useEffect(() => {
-    // サーバーを初期化
-    fetch('/api/socket');
-
-    const socket = io();
+    const socket = io(SOCKET_SERVER_URL);
 
     socket.on('connect', () => {
       console.log('WebSocket接続が確立されました');
