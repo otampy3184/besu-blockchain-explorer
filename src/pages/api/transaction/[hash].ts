@@ -7,6 +7,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const transaction = await provider.getTransaction(hash as string);
         res.status(200).json(transaction);
     } catch (error) {
-        res.status(500).json({error: "cannot find transaction"});
+        res.status(500).json({ error: `cannot find transaction: ${error}` });
     }
 };

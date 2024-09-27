@@ -1,7 +1,7 @@
 // src/pages/index.tsx
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import LatestBlockHeader from '@/components/LatestBlockHeader'; 
+import LatestBlockHeader from '@/components/LatestBlockHeader';
 
 const Home = () => {
   const [input, setInput] = useState('');
@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <div>
       <h1>ブロックチェーンエクスプローラー</h1>
-      <LatestBlockHeader/>
+      <LatestBlockHeader />
       <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="トランザクションハッシュまたはアドレスを入力" />
       <button onClick={handleSearch}>検索</button>
     </div>
