@@ -1,24 +1,14 @@
-// pages/api/socket.ts
-import { NextApiRequest } from 'next';
+// app/api/socket/route.ts
+import { NextRequest } from 'next/server';
 import { Server } from 'socket.io';
-import type { Server as HTTPServer } from 'http';
-import type { Socket as NetSocket } from 'net';
+import { NextResponse } from 'next/server';
+import provider from '../../../utils/provider';
 
-import provider from '../../utils/provider';
-
-interface SocketServer extends HTTPServer {
-  io?: Server;
-}
-
-interface SocketWithIO extends NetSocket {
-  server: SocketServer;
-}
-
-export default function handler(req: NextApiRequest, res: any) {
-  if (!res.socket.server.io) {
+export async function GET(request: NextRequest) {
+  if (!(global as any).io) {
     console.log('Socket.IOサーバーを初期化します');
-    const io = new Server(res.socket.server);
-    res.socket.server.io = io;
+    const io = new Server();
+    (global as any).io = io;
 
     io.on('connection', (socket) => {
       console.log('クライアントが接続しました');
@@ -27,7 +17,7 @@ export default function handler(req: NextApiRequest, res: any) {
         try {
           const block = await provider.getBlock(blockNumber);
           let blockHeader;
-          if(block){
+          if (block) {
             blockHeader = {
                 number: block.number,
                 hash: block.hash,
@@ -46,5 +36,6 @@ export default function handler(req: NextApiRequest, res: any) {
   } else {
     console.log('既存のSocket.IOサーバーを使用します');
   }
-  res.end();
+
+  return NextResponse.json({ message: 'Socket.IOサーバーが起動しました' });
 }

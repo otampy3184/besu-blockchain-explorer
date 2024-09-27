@@ -1,9 +1,11 @@
-// src/pages/index.tsx
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import LatestBlockHeader from '@/components/LatestBlockHeader';
+// app/page.tsx
+'use client';
 
-const Home = () => {
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import LatestBlockHeader from '../components/LatestBlockHeader';
+
+export default function HomePage() {
   const [input, setInput] = useState('');
   const router = useRouter();
 
@@ -13,18 +15,20 @@ const Home = () => {
     } else if (input.startsWith('0x') && input.length === 42) {
       router.push(`/address/${input}`);
     } else {
-      alert('invalid input');
+      alert('無効な入力です');
     }
   };
 
   return (
     <div>
       <h1>ブロックチェーンエクスプローラー</h1>
-      <LatestBlockHeader />
-      <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="トランザクションハッシュまたはアドレスを入力" />
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="トランザクションハッシュまたはアドレスを入力"
+      />
       <button onClick={handleSearch}>検索</button>
+      <LatestBlockHeader />
     </div>
   );
-};
-
-export default Home;
+}

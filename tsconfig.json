@@ -29,7 +29,7 @@
     "moduleResolution": "node"
   },
   "include": [
-    "server.ts",
+    "socket-server.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
